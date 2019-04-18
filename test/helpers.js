@@ -1,0 +1,35 @@
+const crypto = require('crypto');
+
+const {
+  SLACK_REQUEST_TIMESTAMP_HEADER,
+  SLACK_REQUEST_SIGNATURE_HEADER,
+  SLACK_COMMAND_API_VERSION
+} = require('../constants');
+
+const MOCK_REQUEST_BODY = 'token=xyzz0WbapA4vBCDEFasx0q6G&team_id=T1DC2JH3J&team_domain=testteamnow&channel_id=G8PSS9T3V&channel_name=foobar&user_id=U2CERLKJA&user_name=roadrunner&command=%2Fwebhook-collect&text=&response_url=https%3A%2F%2Fhooks.slack.com%2Fcommands%2FT1DC2JH3J%2F397700885554%2F96rGlfmibIGlgcZRskXaIFfN&trigger_id=398738663015.47445629121.803a0bc887a14d10d2c447fce8b6703c';
+const MOCK_CORRECT_SLACK_SIGNING_SECRET = 'MOCK_CORRECT_SLACK_SIGNING_SECRET';
+const MOCK_ERRONEOUS_SLACK_SIGNING_SECRET = 'MOCK_ERRONEOUS_SLACK_SIGNING_SECRET';
+const MOCK_SUCCESSFUL_SLACK_REQUEST_TIMESTAMP_HEADER = Math.floor(Date.now() / 1000);
+
+const createRequestSignature = () => [
+  SLACK_COMMAND_API_VERSION,
+  crypto
+    .createHmac('sha256', MOCK_CORRECT_SLACK_SIGNING_SECRET)
+    .update(`${SLACK_COMMAND_API_VERSION}:${MOCK_SUCCESSFUL_SLACK_REQUEST_TIMESTAMP_HEADER}:${MOCK_REQUEST_BODY}`)
+    .digest('hex')
+].join('=');
+
+const MOCK_SUCCESSFUL_REQUEST_OPTIONS = {
+  body: MOCK_REQUEST_BODY,
+  headers: {
+    [ SLACK_REQUEST_TIMESTAMP_HEADER ]: MOCK_SUCCESSFUL_SLACK_REQUEST_TIMESTAMP_HEADER,
+    [ SLACK_REQUEST_SIGNATURE_HEADER ]: createRequestSignature()
+  }
+};
+
+module.exports = {
+  MOCK_CORRECT_SLACK_SIGNING_SECRET,
+  MOCK_ERRONEOUS_SLACK_SIGNING_SECRET,
+  
+  MOCK_SUCCESSFUL_REQUEST_OPTIONS
+};
