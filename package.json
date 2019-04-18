@@ -1,0 +1,22 @@
+{
+  "name": "@vidglo/verify-slack-request",
+  "version": "0.1.0",
+  "description": "Verify incoming HTTP requests from Slack",
+  "main": "index.js",
+  "engines": {
+    "node" : ">=10.13.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vidglo/verify-slack-request.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/vidglo/verify-slack-request/issues"
+  },
+  "homepage": "https://github.com/vidglo/verify-slack-request#readme"
+}
